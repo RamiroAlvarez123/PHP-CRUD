@@ -1,6 +1,7 @@
 <?php 
 include "conexion.php";
 include "validaciones.php";
+include_once "notificaciones.php";
 
 if (!empty($_POST["cargar"])){
     if(!empty($_POST["nombre"]) && !empty($_POST["apellido"]) && !empty($_POST["dni"]) && !empty($_POST["fecha_nacimiento"]) && !empty($_POST["sexo"]) && !empty($_POST["telefono"])){
@@ -31,7 +32,7 @@ if (!empty($_POST["cargar"])){
             $errores[] = 'Error: fecha de nacimiento invalida';
         }if (!empty($errores)) {
             foreach ($errores as $error) {
-                echo $error . "<br>";
+                echo toast($error, "danger");
             }
         }else{
                 $sql=$conn->query(" insert into aspirantes(nombre, apellido, dni, fecha_nacimiento, sexo, telefono, imagen) values('$nombre', '$apellido', $dni, '$fecha_nacimiento', '$sexo', '$telefono','')");
@@ -44,31 +45,30 @@ if (!empty($_POST["cargar"])){
                     if (!is_uploaded_file($imagen)) {
                         $ruta = $directorio . "defaultimg.jpg";
                         $conn->query("UPDATE aspirantes SET imagen='$ruta' WHERE id='$id'");
-                        echo '<div class="alert alert-success">Aspirante registrado con imagen predeterminada</div>';
-
+                        echo toast('Aspirante registrado correctamente', "success");
                     } else {
                         
                         if (($extension == "jpg" || $extension == "jpeg") && $tamañoImagen <= 512000) {
                             $ruta = $directorio . $id . "." . $extension;
                             if (move_uploaded_file($imagen, $ruta)) {
                                 $conn->query("UPDATE aspirantes SET imagen='$ruta' WHERE id='$id'");
-                                echo '<div class="alert alert-success">Aspirante registrado correctamente con imagen</div>';
+                                echo toast('Aspirante registrado correctamente', "success");
                             } else {
-                                echo '<div class="alert alert-warning">Error al mover la imagen</div>';
+                                echo toast('Error al mover la imagen', "danger");
                             }
                         } else {
                             
                             $ruta = $directorio . "defaultimg.jpg";
                             $conn->query("UPDATE aspirantes SET imagen='$ruta' WHERE id='$id'");
-                            echo '<div class="alert alert-warning">Formato o tamaño de imagen incorrecto. Se asignó imagen predeterminada</div>';
+                            echo toast('Formato o tamaño de imagen incorrecto. Se asignó imagen predeterminada', "warning");
                         }
                     }
                 } else {
-                    echo '<div class="alert alert-warning">Error al registrar aspirante</div>';
+                    echo toast('Error al registrar aspirante', "danger");
                 }
             }
             } else {
-                echo '<div class="alert alert-warning">Existen campos vacíos</div>';
+                echo toast('Existen campos vacíos', "danger");
             }
     ?>
 

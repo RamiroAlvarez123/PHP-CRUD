@@ -1,5 +1,6 @@
 <?php
 include "conexion.php";
+include_once  "notificaciones.php";
 
 $id = $_GET["id"];
 $sql = $conn->query("SELECT * FROM aspirantes WHERE id=$id");
@@ -98,7 +99,7 @@ if (!empty($_POST["actualizar"])) {
                 $rutaImagen = $directorio . $id . "." . $extension;
                 move_uploaded_file($imagen, $rutaImagen);
             } else {
-                echo '<div class="alert alert-warning">Formato o tamaño de imagen incorrecto. Se mantiene la imagen anterior.</div>';
+                echo toast('Formato o tamaño de imagen incorrecto. Se mantiene la imagen anterior.', "danger");
             }
         }
 
@@ -109,10 +110,10 @@ if (!empty($_POST["actualizar"])) {
         if ($sql) {
             header("Location: index.php");
         } else {
-            echo '<div class="alert alert-danger">Error al actualizar los datos</div>';
+            echo toast('Error al actualizar los datos',"danger");
         }
     } else {
-        echo '<div class="alert alert-warning">Existen campos vacíos</div>';
+        echo toast('Existen campos vacíos', "warning");
     }
 }
 ?>
