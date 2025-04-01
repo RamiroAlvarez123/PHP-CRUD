@@ -57,7 +57,7 @@ if(!isset($_SESSION['id'])){
                 
 
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="DNI" name="dni" aria-label="Last name">
+                    <input type="text" class="form-control" placeholder="DNI (sin puntos)" name="dni" aria-label="Last name" >
                 </div>
 
                 <div class="col">

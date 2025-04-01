@@ -1,5 +1,6 @@
 <?php 
 include "conexion.php";
+include "validaciones.php";
 
 if (!empty($_POST["cargar"])){
     if(!empty($_POST["nombre"]) && !empty($_POST["apellido"]) && !empty($_POST["dni"]) && !empty($_POST["fecha_nacimiento"]) && !empty($_POST["sexo"]) && !empty($_POST["telefono"])){
@@ -17,41 +18,58 @@ if (!empty($_POST["cargar"])){
         $tamañoImagen=$_FILES["imagen"]["size"];
         $directorio="imagenes/";
 
-        $sql=$conn->query(" insert into aspirantes(nombre, apellido, dni, fecha_nacimiento, sexo, telefono, imagen) values('$nombre', '$apellido', $dni, '$fecha_nacimiento', '$sexo', '$telefono','')");
-        
-
-        if ($sql) {
-            $id = $conn->insert_id;
-
-            
-            if (!is_uploaded_file($imagen)) {
-                $ruta = $directorio . "defaultimg.jpg";
-                $conn->query("UPDATE aspirantes SET imagen='$ruta' WHERE id='$id'");
-                echo '<div class="alert alert-success">Aspirante registrado con imagen predeterminada</div>';
-
-            } else {
+        $errores = [];
+        if(!validar_str($nombre)){
+            $errores[] = 'Error: Nombre invalido';
+        }if (!validar_str($apellido)){
+            $errores[] = 'Error: Apellido invalido';
+        }if (!validar_dni($dni)){
+            $errores[] = 'Error: DNI invalido';
+        }if(!validar_tel($telefono)){
+            $errores[] = 'Error: telefono invalido';
+        }if(!validar_fechaNac($fecha_nacimiento)){
+            $errores[] = 'Error: fecha de nacimiento invalida';
+        }if (!empty($errores)) {
+            foreach ($errores as $error) {
+                echo $error . "<br>";
+            }
+        }else{
+                $sql=$conn->query(" insert into aspirantes(nombre, apellido, dni, fecha_nacimiento, sexo, telefono, imagen) values('$nombre', '$apellido', $dni, '$fecha_nacimiento', '$sexo', '$telefono','')");
                 
-                if (($extension == "jpg" || $extension == "jpeg") && $tamañoImagen <= 512000) {
-                    $ruta = $directorio . $id . "." . $extension;
-                    if (move_uploaded_file($imagen, $ruta)) {
+
+                if ($sql) {
+                    $id = $conn->insert_id;
+
+                    
+                    if (!is_uploaded_file($imagen)) {
+                        $ruta = $directorio . "defaultimg.jpg";
                         $conn->query("UPDATE aspirantes SET imagen='$ruta' WHERE id='$id'");
-                        echo '<div class="alert alert-success">Aspirante registrado correctamente con imagen</div>';
+                        echo '<div class="alert alert-success">Aspirante registrado con imagen predeterminada</div>';
+
                     } else {
-                        echo '<div class="alert alert-warning">Error al mover la imagen</div>';
+                        
+                        if (($extension == "jpg" || $extension == "jpeg") && $tamañoImagen <= 512000) {
+                            $ruta = $directorio . $id . "." . $extension;
+                            if (move_uploaded_file($imagen, $ruta)) {
+                                $conn->query("UPDATE aspirantes SET imagen='$ruta' WHERE id='$id'");
+                                echo '<div class="alert alert-success">Aspirante registrado correctamente con imagen</div>';
+                            } else {
+                                echo '<div class="alert alert-warning">Error al mover la imagen</div>';
+                            }
+                        } else {
+                            
+                            $ruta = $directorio . "defaultimg.jpg";
+                            $conn->query("UPDATE aspirantes SET imagen='$ruta' WHERE id='$id'");
+                            echo '<div class="alert alert-warning">Formato o tamaño de imagen incorrecto. Se asignó imagen predeterminada</div>';
+                        }
                     }
                 } else {
-                    
-                    $ruta = $directorio . "defaultimg.jpg";
-                    $conn->query("UPDATE aspirantes SET imagen='$ruta' WHERE id='$id'");
-                    echo '<div class="alert alert-warning">Formato o tamaño de imagen incorrecto. Se asignó imagen predeterminada</div>';
+                    echo '<div class="alert alert-warning">Error al registrar aspirante</div>';
                 }
             }
-        } else {
-            echo '<div class="alert alert-warning">Error al registrar aspirante</div>';
-        }
-    } else {
-        echo '<div class="alert alert-warning">Existen campos vacíos</div>';
-    }
+            } else {
+                echo '<div class="alert alert-warning">Existen campos vacíos</div>';
+            }
     ?>
 
 <script>
