@@ -1,0 +1,12 @@
+ul {
+    background-color: #4CAF50; /* Color verde */
+}
+
+.nav-link {
+    color: white !important;
+    text-decoration: none;
+}
+
+.nav-link:hover {
+    color: #ddd !important; /* Color más claro al pasar el mouse */
+}

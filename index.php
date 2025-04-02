@@ -14,8 +14,9 @@ if(!isset($_SESSION['id'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SISTEMA ASPIRANTES</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <!-- DataTables CSS -->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 </head>
@@ -43,11 +44,11 @@ if(!isset($_SESSION['id'])){
 
             <div class="row mb-3">
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="Nombre" name="nombre" aria-label="First name">
+                    <input type="text" class="form-control" placeholder="Nombre" name="nombre" aria-label="First name" value="<?php echo isset($_POST['nombre']) ? htmlspecialchars($_POST['nombre']) : ''; ?>">
                 </div>
 
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="Apellido" name="apellido"aria-label="Last name">
+                    <input type="text" class="form-control" placeholder="Apellido" name="apellido"aria-label="Last name" value="<?php echo isset($_POST['apellido']) ? htmlspecialchars($_POST['apellido']) : ''; ?>">
                 </div>
             </div>
             
@@ -57,17 +58,17 @@ if(!isset($_SESSION['id'])){
                 
 
                 <div class="col">
-                    <input type="text" class="form-control" placeholder="DNI (sin puntos)" name="dni" aria-label="Last name" >
+                    <input type="text" class="form-control" placeholder="DNI (sin puntos)" name="dni" aria-label="dni" value="<?php echo isset($_POST['dni']) ? htmlspecialchars($_POST['dni']) : ''; ?>">
                 </div>
 
                 <div class="col">
 
-                    <input type="text" class="form-control" placeholder="telefono" name="telefono" aria-label="Last name">
+                    <input type="text" class="form-control" placeholder="telefono" name="telefono" aria-label="Last name" value="<?php echo isset($_POST['telefono']) ? htmlspecialchars($_POST['telefono']) : ''; ?>">
                 </div>
              </div>
              <div class="col-4">
                     <label class="form-label">Fecha de Nacimiento</label>
-                    <input type="date" class="form-control" name="fecha_nacimiento">
+                    <input type="date" class="form-control" name="fecha_nacimiento" value="<?php echo isset($_POST['fecha_nacimiento']) ? htmlspecialchars($_POST['fecha_nacimiento']) : ''; ?>">
                 </div>
                 <div class="col">
                     <label class="form-label">Sexo</label>

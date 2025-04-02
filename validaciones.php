@@ -6,8 +6,6 @@ function validar_dni($dni){
     include "conexion.php";
 
     $sql = $conn->query("select id,dni from aspirantes where dni='$dni'");
-    $row = $sql->fetch_assoc();
-    $sql_id = $row['id'];
 
     return is_numeric($dni) && strlen($dni) >= 8 && strlen($dni) <=11 && !$sql->fetch_object();
 }

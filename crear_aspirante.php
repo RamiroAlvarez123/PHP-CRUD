@@ -53,6 +53,7 @@ if (!empty($_POST["cargar"])){
                             if (move_uploaded_file($imagen, $ruta)) {
                                 $conn->query("UPDATE aspirantes SET imagen='$ruta' WHERE id='$id'");
                                 echo toast('Aspirante registrado correctamente', "success");
+                                unset($_POST);
                             } else {
                                 echo toast('Error al mover la imagen', "danger");
                             }
@@ -60,7 +61,8 @@ if (!empty($_POST["cargar"])){
                             
                             $ruta = $directorio . "defaultimg.jpg";
                             $conn->query("UPDATE aspirantes SET imagen='$ruta' WHERE id='$id'");
-                            echo toast('Formato o tamaño de imagen incorrecto. Se asignó imagen predeterminada', "warning");
+                            echo toast('Formato o tamaño de imagen incorrecto. Se asignó imagen predeterminada', "danger");
+                            unset($_POST);
                         }
                     }
                 } else {
