@@ -1,15 +1,19 @@
 <?php
  session_start();
  include "conexion.php";
+ include_once "validaciones.php";
     if(!empty($_POST["registrar"])){
         if(!empty($_POST["usuario"]) && !empty($_POST["password"]) && !empty($_POST["privilegio"])){
             $usuario = $_POST["usuario"];
             $password = $_POST["password"];
             $privilegio = $_POST["privilegio"];
 
+            $error = '';
             if(strlen($password) < 8){
                 $error = 'la contraseña debe tener mas de 8 caracteres';
-            }else{
+            }if(!validar_usuario($usuario)){
+              $error = 'el usuario ya se encuentra registrado';
+            }if(!$error){
             $sql = $conn->prepare("insert into usuarios (usuario, password, privilegio) values(?,?,?)");
             $sql->bind_param("sss", $usuario, $password, $privilegio);
             $sql->execute();

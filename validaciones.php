@@ -34,4 +34,11 @@ function validar_fechaNac($fecha) {
      $timestampHoy = strtotime(date("Y-m-d"));
      return $timestampFecha !== false && $timestampFecha <= $timestampHoy;
 }
+
+function validar_usuario($usuario){
+    include "conexion.php";
+    $sql = $conn->query("select usuario from usuarios where usuario='$usuario'");
+
+    return !$sql->fetch_object();
+}
 ?>
