@@ -30,6 +30,8 @@ function validar_tel($telefono){
     return preg_match('/^\d{7,15}$/', $telefono);
 }
 function validar_fechaNac($fecha) {
-    return (bool)strtotime($fecha); 
+     $timestampFecha = strtotime($fecha);
+     $timestampHoy = strtotime(date("Y-m-d"));
+     return $timestampFecha !== false && $timestampFecha <= $timestampHoy;
 }
 ?>
